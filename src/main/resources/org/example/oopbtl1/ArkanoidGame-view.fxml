@@ -9,10 +9,13 @@
     <children>
         <Pane fx:id="gamePane" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label fx:id="gameTitle" layoutX="296.0" layoutY="118.0" scaleX="4.0" scaleY="4.0" scaleZ="4.0" text="Arkanoid" />
-            <Button fx:id="startButton" layoutX="299.0" layoutY="228.0" mnemonicParsing="false" onAction="#onClickButtonStart" text="Start" />
             <Button fx:id="homeButton" layoutX="558.0" layoutY="14.0" mnemonicParsing="false" onAction="#onClickButtonHome" text="Home" />
             <Label fx:id="scoreLable" layoutX="46.0" layoutY="18.0" text="Score" />
          </children></Pane>
+        <Pane fx:id="Menu" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <Label fx:id="gameTitle" layoutX="296.0" layoutY="118.0" scaleX="4.0" scaleY="4.0" scaleZ="4.0" text="Arkanoid" />
+                <Button fx:id="startButton" layoutX="299.0" layoutY="228.0" mnemonicParsing="false" onAction="#onClickButtonStart" text="Start" />
+            </children></Pane>
     </children>
 </AnchorPane>

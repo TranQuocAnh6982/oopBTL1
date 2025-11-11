@@ -5,7 +5,7 @@ import javafx.scene.shape.Circle;
 
 public class Ball extends MovableObject {
     private Circle ball;
-    private double directionX=7, directionY=-3;
+    private double directionX=0, directionY=-4;
     private double speed=1;
 
     public Ball(double radius, double X, double Y) {
@@ -43,6 +43,8 @@ public class Ball extends MovableObject {
         double X = ball.getLayoutX();
         double Y = ball.getLayoutY();
         if (X + dx < 0 + ball.getRadius() || X + dx > 640 - ball.getRadius()) {
+            if(dx<0 && dx >-5) dx-=1;
+            if(dx>=0 && dx<5) dx+=1;
             dx = -(dx +speed);
             setDirectionX(dx);
         }
