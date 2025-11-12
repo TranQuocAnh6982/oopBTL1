@@ -95,7 +95,7 @@ public class GameManager {
                 ball.setX(paddle.getX() + paddle.getRectangle().getWidth() / 2);
             }
         }
-        if (e.getCode() == KeyCode.W && ballAttachToPaddle) {
+        if (e.getCode() == KeyCode.SPACE && ballAttachToPaddle) {
             timer.start();
             ballAttachToPaddle = false;
         }
@@ -149,6 +149,7 @@ public class GameManager {
     }
 
     public void initialize() {
+
         gamePane.getChildren().add(ball.getCircle());
         gamePane.getChildren().add(paddle.getRectangle());
 
