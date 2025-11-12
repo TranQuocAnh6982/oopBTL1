@@ -1,9 +1,10 @@
 package org.example.oopbtl1;
 
-public abstract  class MovableObject extends GameObject {
+public abstract class MovableObject extends GameObject {
     private double dx, dy;
 
-    public void move(){}
+    public void move() {
+    }
 
     public double getDx() {
         return dx;

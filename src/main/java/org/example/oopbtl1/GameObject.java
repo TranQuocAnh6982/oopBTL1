@@ -4,9 +4,11 @@ public abstract class GameObject {
     private double x, y;
     private double width, height;
 
-    public void update(){}
+    public void update() {
+    }
 
-    public void render(){}
+    public void render() {
+    }
 
     public double getX() {
         return x;

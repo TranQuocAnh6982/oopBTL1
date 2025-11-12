@@ -5,8 +5,8 @@ import javafx.scene.shape.Circle;
 
 public class Ball extends MovableObject {
     private Circle ball;
-    private double directionX=0, directionY=-4;
-    private double speed=1;
+    private double directionX = 0, directionY = -4;
+    private double speed = 1;
 
     public Ball(double radius, double X, double Y) {
         ball = new Circle(radius);
@@ -43,13 +43,13 @@ public class Ball extends MovableObject {
         double X = ball.getLayoutX();
         double Y = ball.getLayoutY();
         if (X + dx < 0 + ball.getRadius() || X + dx > 640 - ball.getRadius()) {
-            if(dx<0 && dx >-5) dx-=1;
-            if(dx>=0 && dx<5) dx+=1;
-            dx = -(dx +speed);
+            if (dx < 0 && dx > -5) dx -= 1;
+            if (dx >= 0 && dx < 5) dx += 1;
+            dx = -(dx + speed);
             setDirectionX(dx);
         }
-        if (Y + dy < 0 + ball.getRadius() ) {
-                dy=-(dy+speed);
+        if (Y + dy < 0 + ball.getRadius()) {
+            dy = -(dy + speed);
             setDirectionY(dy);
         }
         ball.setLayoutX(X + dx);
@@ -73,19 +73,24 @@ public class Ball extends MovableObject {
     public void setDirectionY(double directionY) {
         this.directionY = directionY;
     }
+
     public double getSpeed() {
         return speed;
     }
-    public double getX(){
+
+    public double getX() {
         return ball.getLayoutX();
     }
-    public double getY(){
+
+    public double getY() {
         return ball.getLayoutY();
     }
-    public void setX(double x){
+
+    public void setX(double x) {
         ball.setLayoutX(x);
     }
-    public void setY(double y){
+
+    public void setY(double y) {
         ball.setLayoutY(y);
     }
 }
