@@ -36,128 +36,121 @@ public class GameManager {
     private int lives;
     private String GameState;
     private AnimationTimer timer;
-    private boolean ballAttachToPaddle=true;
-    private double ballY=420;
-    Ball ball=new Ball(12, 320, ballY);
-    Paddle  paddle=new Paddle(270, 450);
+    private boolean ballAttachToPaddle = true;
+    private double ballY = 420;
+    Ball ball = new Ball(12, 320, ballY);
+    Paddle paddle = new Paddle(270, 450);
+
     public void startGame() {
 
     }
+
     public void updateGame() {
+    }
+
+    public void onClickButtonStart() {
         for (int i = 0; i < 44; i++) {
-            if(Math.random()*2<1) {
+            if (Math.random() * 2 < 1) {
                 Brick normalbrick = new NormalBrick((i % 11) * 55 + 17.5, (i / 11) * 25 + 50, 1);
                 bricks.add(normalbrick);
                 gamePane.getChildren().add(normalbrick.getRectangle());
-            }
-            else {
-                Brick strongbrick=new StrongBrick((i % 11) * 55 + 17.5, (i / 11) * 25 + 50, 2);
+            } else {
+                Brick strongbrick = new StrongBrick((i % 11) * 55 + 17.5, (i / 11) * 25 + 50, 2);
                 bricks.add(strongbrick);
                 gamePane.getChildren().add(strongbrick.getRectangle());
             }
         }
-    }
-    public void onClickButtonStart(){
         timer.stop();
         Menu.setVisible(false);
         gamePane.setVisible(true);
         EndGame.setVisible(false);
-        score=0;
-        lives=3;
+        score = 0;
+        lives = 3;
         paddle.setX(270);
         paddle.setY(450);
-        ball.setX(paddle.getX() + paddle.getRectangle().getWidth() / 2 );
+        ball.setX(paddle.getX() + paddle.getRectangle().getWidth() / 2);
         ball.setY(ballY);
-        scoreLable.setText("Score: "+score);
-        updateGame();
+        scoreLable.setText("Score: " + score);
         gamePane.setFocusTraversable(true);
         gamePane.setOnKeyPressed(this::handleInput);
         gamePane.requestFocus();
     }
-    public void onClickButtonHome(){
+
+    public void onClickButtonHome() {
         timer.stop();
         Menu.setVisible(true);
         gamePane.setVisible(false);
     }
+
     public void handleInput(KeyEvent e) {
-        if(e.getCode()==KeyCode.A){
+        if (e.getCode() == KeyCode.A) {
             paddle.moveLeft();
-            if(ballAttachToPaddle) {
-                ball.setX(paddle.getX() + paddle.getRectangle().getWidth() / 2 );
-            }        }
-        if(e.getCode()==KeyCode.D){
-            paddle.moveRight();
-            if(ballAttachToPaddle) {
-                ball.setX(paddle.getX() + paddle.getRectangle().getWidth() / 2 );
+            if (ballAttachToPaddle) {
+                ball.setX(paddle.getX() + paddle.getRectangle().getWidth() / 2);
             }
         }
-        if(e.getCode()==KeyCode.W && ballAttachToPaddle){
+        if (e.getCode() == KeyCode.D) {
+            paddle.moveRight();
+            if (ballAttachToPaddle) {
+                ball.setX(paddle.getX() + paddle.getRectangle().getWidth() / 2);
+            }
+        }
+        if (e.getCode() == KeyCode.W && ballAttachToPaddle) {
             timer.start();
-            ballAttachToPaddle=false;
+            ballAttachToPaddle = false;
         }
     }
 
     public void checkCollisions() {
         double dx = ball.getDirectionX();
         double dy = ball.getDirectionY();
-        if(ball.checkCollision(paddle)) {
-            if(dx<0 && dx >-5) dx-=1;
-            if(dx>=0 && dx<5) dx+=1;
-            ball.setDirectionX(-(dx+ball.getSpeed()));
-            ball.setDirectionY(-(dy+ball.getSpeed()));
+        if (ball.checkCollision(paddle)) {
+            if (dx < 0 && dx > -5) dx -= 1;
+            if (dx >= 0 && dx < 5) dx += 1;
+            ball.setDirectionX(-(dx + ball.getSpeed()));
+            ball.setDirectionY(-(dy + ball.getSpeed()));
             System.out.println("ball collision paddle");
         }
-        List<Brick> bricksToRemove=new ArrayList<>();
-        for(Brick brick:bricks){
-            if(ball.checkCollision(brick)) {
-                if(dx<0 && dx >-5) dx-=1;
-                if(dx>=0 && dx<5) dx+=1;
-                ball.setDirectionX(-(dx+ball.getSpeed()));
-                ball.setDirectionY(-(dy+ball.getSpeed()));
+        List<Brick> bricksToRemove = new ArrayList<>();
+        for (Brick brick : bricks) {
+            if (ball.checkCollision(brick)) {
+                if (dx < 0 && dx > -5) dx -= 1;
+                if (dx >= 0 && dx < 5) dx += 1;
+                ball.setDirectionX(-(dx + ball.getSpeed()));
+                ball.setDirectionY(-(dy + ball.getSpeed()));
                 brick.takeHit();
-                if(brick.isDestroyed()) {
+                if (brick.isDestroyed()) {
                     bricksToRemove.add(brick);
                     gamePane.getChildren().remove(brick.getRectangle());
                 }
-                score+=10;
+                score += 10;
                 scoreLable.setText("Score: " + score);
                 System.out.println("ball collision brick");
 
             }
         }
         bricks.removeAll(bricksToRemove);
-        if(bricks.isEmpty()){
+        if (bricks.isEmpty()) {
             GameOver();
         }
     }
 
     public void GameOver() {
-            gamePane.setVisible(false);
-            if(lives==0){
-                GameOverLable.setVisible(true);
-                WinLable.setVisible(false);
-            }
-            if(lives>0 && bricks.isEmpty()) {
-                WinLable.setVisible(true);
-                GameOverLable.setVisible(false);
-            }
-            EndGame.setVisible(true);
+        gamePane.setVisible(false);
+        if (lives == 0) {
+            GameOverLable.setVisible(true);
+            WinLable.setVisible(false);
+        }
+        if (lives > 0 && bricks.isEmpty()) {
+            WinLable.setVisible(true);
+            GameOverLable.setVisible(false);
+        }
+        EndGame.setVisible(true);
     }
+
     public void initialize() {
         gamePane.getChildren().add(ball.getCircle());
         gamePane.getChildren().add(paddle.getRectangle());
-        for (int i = 0; i < 44; i++) {
-            if(Math.random()*2<1) {
-                Brick normalbrick = new NormalBrick((i % 11) * 55 + 17.5, (i / 11) * 25 + 50, 1);
-                bricks.add(normalbrick);
-                gamePane.getChildren().add(normalbrick.getRectangle());
-            }
-            else {
-                Brick strongbrick=new StrongBrick((i % 11) * 55 + 17.5, (i / 11) * 25 + 50, 2);
-                bricks.add(strongbrick);
-                gamePane.getChildren().add(strongbrick.getRectangle());
-            }
-        }
 
         gamePane.setVisible(false);
         EndGame.setVisible(false);
@@ -166,16 +159,16 @@ public class GameManager {
             public void handle(long l) {
                 checkCollisions();
                 ball.move();
-                if(ball.getY()>480-ball.getCircle().getRadius()){
+                if (ball.getY() > 480 - ball.getCircle().getRadius()) {
                     timer.stop();
-                    ballAttachToPaddle=true;
+                    ballAttachToPaddle = true;
                     ball.setX(paddle.getX() + paddle.getRectangle().getWidth() / 2);
                     ball.setY(ballY);
                     ball.setDirectionX(0);
                     ball.setDirectionY(-3);
                     lives--;
                     System.out.println(lives);
-                    if(lives==0){
+                    if (lives == 0) {
                         GameOver();
                     }
                 }

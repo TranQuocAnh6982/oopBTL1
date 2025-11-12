@@ -6,6 +6,7 @@ public class PowerUp extends GameObject {
 
     public void applyEffect(Paddle paddle) {
     }
+
     public void removeEffect(Paddle paddle) {
     }
 }

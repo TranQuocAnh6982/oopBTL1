@@ -21,29 +21,33 @@ public class Paddle extends MovableObject {
 
     }
 
-    public Rectangle getRectangle(){
+    public Rectangle getRectangle() {
         return paddle;
     }
 
     public void moveLeft() {
-        paddle.setLayoutX( Math.max(paddle.getLayoutX() - speed, 0));
+        paddle.setLayoutX(Math.max(paddle.getLayoutX() - speed, 0));
     }
 
     public void moveRight() {
-        paddle.setLayoutX(Math.min(paddle.getLayoutX() + speed, 640-100));
+        paddle.setLayoutX(Math.min(paddle.getLayoutX() + speed, 640 - 100));
     }
 
     public void applyPowerup() {
     }
+
     public double getY() {
         return paddle.getY();
     }
+
     public void setY(double y) {
         paddle.setLayoutY(y);
     }
+
     public double getX() {
         return paddle.getLayoutX();
     }
+
     public void setX(double x) {
         paddle.setLayoutX(x);
     }
