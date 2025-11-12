@@ -39,7 +39,7 @@ public class Paddle extends MovableObject {
         return paddle.getY();
     }
     public void setY(double y) {
-        paddle.setY(y);
+        paddle.setLayoutY(y);
     }
     public double getX() {
         return paddle.getLayoutX();

@@ -64,10 +64,10 @@ public class GameManager {
         EndGame.setVisible(false);
         score=0;
         lives=3;
-        ball.setX(320);
+        paddle.setX(270);
+        paddle.setY(450);
+        ball.setX(paddle.getX() + paddle.getRectangle().getWidth() / 2 );
         ball.setY(ballY);
-//        paddle.setX(270);
-//        paddle.setY(450);
         scoreLable.setText("Score: "+score);
         updateGame();
         gamePane.setFocusTraversable(true);
@@ -83,12 +83,12 @@ public class GameManager {
         if(e.getCode()==KeyCode.A){
             paddle.moveLeft();
             if(ballAttachToPaddle) {
-                ball.setX(paddle.getX() + paddle.getRectangle().getWidth() / 2 - ball.getCircle().getRadius());
+                ball.setX(paddle.getX() + paddle.getRectangle().getWidth() / 2 );
             }        }
         if(e.getCode()==KeyCode.D){
             paddle.moveRight();
             if(ballAttachToPaddle) {
-                ball.setX(paddle.getX() + paddle.getRectangle().getWidth() / 2 - ball.getCircle().getRadius());
+                ball.setX(paddle.getX() + paddle.getRectangle().getWidth() / 2 );
             }
         }
         if(e.getCode()==KeyCode.W && ballAttachToPaddle){
@@ -169,7 +169,7 @@ public class GameManager {
                 if(ball.getY()>480-ball.getCircle().getRadius()){
                     timer.stop();
                     ballAttachToPaddle=true;
-                    ball.setX(320);
+                    ball.setX(paddle.getX() + paddle.getRectangle().getWidth() / 2);
                     ball.setY(ballY);
                     ball.setDirectionX(0);
                     ball.setDirectionY(-3);
