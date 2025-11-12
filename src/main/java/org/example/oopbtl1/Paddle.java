@@ -35,5 +35,17 @@ public class Paddle extends MovableObject {
 
     public void applyPowerup() {
     }
+    public double getY() {
+        return paddle.getY();
+    }
+    public void setY(double y) {
+        paddle.setY(y);
+    }
+    public double getX() {
+        return paddle.getLayoutX();
+    }
+    public void setX(double x) {
+        paddle.setLayoutX(x);
+    }
 
 }
