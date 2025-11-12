@@ -54,7 +54,6 @@ public class Ball extends MovableObject {
         }
         ball.setLayoutX(X + dx);
         ball.setLayoutY(Y + dy);
-        //  System.out.println("Ball position: " + ball.getLayoutX() + ", " + ball.getLayoutY());
 
     }
 
