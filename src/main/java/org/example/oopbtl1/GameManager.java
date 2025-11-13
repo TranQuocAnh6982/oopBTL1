@@ -10,7 +10,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
-import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +33,13 @@ public class GameManager {
     private Label GameOverLable, WinLable;
     @FXML
     private Button restartButton;
+    @FXML
+    private Pane setting;
+    @FXML
+    private Button settingButton;
+    @FXML
+    private Button exitButton;
+    private int currentLevel = 1;
     private List<Brick> bricks = new ArrayList<>();
     private List<PowerUp> powerUps = new ArrayList<>();
     private int score;
@@ -56,16 +62,23 @@ public class GameManager {
     }
 
     public void onClickButtonStart() {
+        ballAttachToPaddle = true;
+        ball.setDirectionX(0);
+        ball.setDirectionY(-4);
         for (int i = 0; i < 44; i++) {
-            if (Math.random() * 2 < 1) {
-                Brick normalbrick = new NormalBrick((i % 11) * 55 + 17.5, (i / 11) * 25 + 50, 1);
-                bricks.add(normalbrick);
-                gamePane.getChildren().add(normalbrick.getRectangle());
+            double x = (i % 11) * 55 + 17.5;
+            double y = (i / 11) * 25 + 50;
+            Brick brick;
+            if (currentLevel == 1) {
+                brick = new NormalBrick(x, y, 1);
+            } else if (currentLevel== 2) {
+                brick = Math.random() < 0.5 ? new StrongBrick(x, y, 2)
+                        : new NormalBrick(x, y, 2);
             } else {
-                Brick strongbrick = new StrongBrick((i % 11) * 55 + 17.5, (i / 11) * 25 + 50, 2);
-                bricks.add(strongbrick);
-                gamePane.getChildren().add(strongbrick.getRectangle());
+                brick = new StrongBrick(x, y, 1);
             }
+            bricks.add(brick);
+            gamePane.getChildren().add(brick.getRectangle());
         }
         timer.stop();
         Menu.setVisible(false);
@@ -82,11 +95,27 @@ public class GameManager {
         gamePane.setOnKeyPressed(this::handleInput);
         gamePane.requestFocus();
     }
-
+    public void onClickButtonLevel1() {
+       currentLevel=1;
+    }
+    public void onClickButtonLevel2() {
+       currentLevel=2;
+    }
+    public void onClickButtonLevel3() {
+       currentLevel=3;
+    }
     public void onClickButtonHome() {
         timer.stop();
         Menu.setVisible(true);
         gamePane.setVisible(false);
+    }
+
+    public void onClickButtonExit() {
+        setting.setVisible(false);
+    }
+
+    public void onClickButtonSetting() {
+        setting.setVisible(true);
     }
 
     public void handleInput(KeyEvent e) {
@@ -156,22 +185,26 @@ public class GameManager {
         }
         EndGame.setVisible(true);
     }
+
     public void backgroundMusic() {
         URL url = getClass().getResource("/org/example/oopbtl1/sound/backgroundMusic.mp3");
-        backgroundMedia=new Media(url.toExternalForm());
-        backgroundPlayer=new MediaPlayer(backgroundMedia);
+        backgroundMedia = new Media(url.toExternalForm());
+        backgroundPlayer = new MediaPlayer(backgroundMedia);
         backgroundPlayer.setVolume(0.2);
         backgroundPlayer.play();
     }
+
     public void ballCollisionMusic() {
         URL url = getClass().getResource("/org/example/oopbtl1/sound/ballCollisionMusic.mp3");
-        ballMedia=new Media(url.toExternalForm());
-        ballPlayer=new MediaPlayer(ballMedia);
+        ballMedia = new Media(url.toExternalForm());
+        ballPlayer = new MediaPlayer(ballMedia);
         ballPlayer.setVolume(2);
         ballPlayer.play();
     }
+
     public void initialize() {
         backgroundMusic();
+        setting.setVisible(false);
         gamePane.getChildren().add(ball.getCircle());
         gamePane.getChildren().add(paddle.getRectangle());
 
@@ -190,7 +223,7 @@ public class GameManager {
                     ball.setX(paddle.getX() + paddle.getRectangle().getWidth() / 2);
                     ball.setY(ballY);
                     ball.setDirectionX(0);
-                    ball.setDirectionY(-3);
+                    ball.setDirectionY(-4);
                     lives--;
                     System.out.println(lives);
                     if (lives == 0) {
