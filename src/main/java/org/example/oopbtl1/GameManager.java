@@ -7,7 +7,11 @@ import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
+import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,12 +41,15 @@ public class GameManager {
     private String GameState;
     private AnimationTimer timer;
     private boolean ballAttachToPaddle = true;
+    private MediaPlayer backgroundPlayer;
+    private MediaPlayer ballPlayer;
+    private Media backgroundMedia;
+    private Media ballMedia;
     private double ballY = 420;
     Ball ball = new Ball(12, 320, ballY);
     Paddle paddle = new Paddle(270, 450);
 
     public void startGame() {
-
     }
 
     public void updateGame() {
@@ -105,6 +112,7 @@ public class GameManager {
         double dx = ball.getDirectionX();
         double dy = ball.getDirectionY();
         if (ball.checkCollision(paddle)) {
+            ballCollisionMusic();
             if (dx < 0 && dx > -5) dx -= 1;
             if (dx >= 0 && dx < 5) dx += 1;
             ball.setDirectionX(-(dx + ball.getSpeed()));
@@ -114,6 +122,7 @@ public class GameManager {
         List<Brick> bricksToRemove = new ArrayList<>();
         for (Brick brick : bricks) {
             if (ball.checkCollision(brick)) {
+                ballCollisionMusic();
                 if (dx < 0 && dx > -5) dx -= 1;
                 if (dx >= 0 && dx < 5) dx += 1;
                 ball.setDirectionX(-(dx + ball.getSpeed()));
@@ -147,14 +156,29 @@ public class GameManager {
         }
         EndGame.setVisible(true);
     }
-
+    public void backgroundMusic() {
+        URL url = getClass().getResource("/org/example/oopbtl1/sound/backgroundMusic.mp3");
+        backgroundMedia=new Media(url.toExternalForm());
+        backgroundPlayer=new MediaPlayer(backgroundMedia);
+        backgroundPlayer.setVolume(0.2);
+        backgroundPlayer.play();
+    }
+    public void ballCollisionMusic() {
+        URL url = getClass().getResource("/org/example/oopbtl1/sound/ballCollisionMusic.mp3");
+        ballMedia=new Media(url.toExternalForm());
+        ballPlayer=new MediaPlayer(ballMedia);
+        ballPlayer.setVolume(2);
+        ballPlayer.play();
+    }
     public void initialize() {
-
+        backgroundMusic();
         gamePane.getChildren().add(ball.getCircle());
         gamePane.getChildren().add(paddle.getRectangle());
 
         gamePane.setVisible(false);
         EndGame.setVisible(false);
+
+
         timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
