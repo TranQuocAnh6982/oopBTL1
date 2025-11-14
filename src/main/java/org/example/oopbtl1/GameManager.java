@@ -63,6 +63,7 @@ public class GameManager {
     }
 
     public void onClickButtonStart() {
+        setting.setVisible(false);
         ballAttachToPaddle = true;
         ball.setDirectionX(0);
         ball.setDirectionY(-4);
@@ -98,12 +99,15 @@ public class GameManager {
     }
     public void onClickButtonLevel1() {
        currentLevel=1;
+       onClickButtonStart();
     }
     public void onClickButtonLevel2() {
        currentLevel=2;
+       onClickButtonStart();
     }
     public void onClickButtonLevel3() {
        currentLevel=3;
+       onClickButtonStart();
     }
     public void onClickButtonHome() {
         timer.stop();
