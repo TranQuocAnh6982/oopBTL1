@@ -4,7 +4,6 @@ import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
@@ -20,27 +19,15 @@ public class GameManager {
     @FXML
     private Pane gamePane;
     @FXML
-    private Button homeButton;
-    @FXML
     private Label scoreLable;
     @FXML
     private Pane Menu;
-    @FXML
-    private Label gameTitle;
-    @FXML
-    private Button startButton;
     @FXML
     private Pane EndGame;
     @FXML
     private Label GameOverLable, WinLable;
     @FXML
-    private Button restartButton;
-    @FXML
     private Pane setting;
-    @FXML
-    private Button settingButton;
-    @FXML
-    private Button exitButton;
     @FXML
     private List<SVGPath> svgPaths = new ArrayList<>();
     @FXML
@@ -49,6 +36,8 @@ public class GameManager {
     private SVGPath heart2;
     @FXML
     private SVGPath heart3;
+    @FXML
+    private Button nextLevelButton;
     private int currentLevel = 1;
     private List<Brick> bricks = new ArrayList<>();
     private List<PowerUp> powerUps = new ArrayList<>();
@@ -66,9 +55,44 @@ public class GameManager {
     Paddle paddle = new Paddle(270, 450);
 
     public void startGame() {
+        backgroundMusic();
+        svgPaths.add(heart1);
+        svgPaths.add(heart2);
+        svgPaths.add(heart3);
+        lives = svgPaths.size();
+        setting.setVisible(false);
+        nextLevelButton.setVisible(false);
+        gamePane.getChildren().add(ball.getCircle());
+        gamePane.getChildren().add(paddle.getRectangle());
+
+        gamePane.setVisible(false);
+        EndGame.setVisible(false);
     }
 
     public void updateGame() {
+        timer = new AnimationTimer() {
+            @Override
+            public void handle(long l) {
+                checkCollisions();
+                ball.move();
+                if (ball.getY() > 480 - ball.getCircle().getRadius()) {
+                    timer.stop();
+                    ballAttachToPaddle = true;
+                    ball.setX(paddle.getX() + paddle.getRectangle().getWidth() / 2);
+                    ball.setY(ballY);
+                    ball.setDirectionX(0);
+                    ball.setDirectionY(-4);
+                    if (lives > 0) {
+                        lives--;
+                        svgPaths.get(lives).setVisible(false);
+                    }
+                    System.out.println(lives);
+                    if (lives == 0) {
+                        GameOver();
+                    }
+                }
+            }
+        };
     }
 
     public void onClickButtonStart() {
@@ -82,7 +106,7 @@ public class GameManager {
             Brick brick;
             if (currentLevel == 1) {
                 brick = new NormalBrick(x, y, 1);
-            } else if (currentLevel== 2) {
+            } else if (currentLevel == 2) {
                 brick = Math.random() < 0.5 ? new StrongBrick(x, y, 2)
                         : new NormalBrick(x, y, 2);
             } else {
@@ -91,10 +115,10 @@ public class GameManager {
             bricks.add(brick);
             gamePane.getChildren().add(brick.getRectangle());
         }
-        for(SVGPath svgPath : svgPaths) {
+        for (SVGPath svgPath : svgPaths) {
             svgPath.setVisible(true);
         }
-        lives=svgPaths.size();
+        lives = svgPaths.size();
         timer.stop();
         Menu.setVisible(false);
         gamePane.setVisible(true);
@@ -109,18 +133,27 @@ public class GameManager {
         gamePane.setOnKeyPressed(this::handleInput);
         gamePane.requestFocus();
     }
+
     public void onClickButtonLevel1() {
-       currentLevel=1;
-       onClickButtonStart();
+        currentLevel = 1;
+        onClickButtonStart();
     }
+
     public void onClickButtonLevel2() {
-       currentLevel=2;
-       onClickButtonStart();
+        currentLevel = 2;
+        onClickButtonStart();
     }
+
+    public void onClickNextLevelButton() {
+        currentLevel = currentLevel + 1;
+        onClickButtonStart();
+    }
+
     public void onClickButtonLevel3() {
-       currentLevel=3;
-       onClickButtonStart();
+        currentLevel = 3;
+        onClickButtonStart();
     }
+
     public void onClickButtonHome() {
         timer.stop();
         Menu.setVisible(true);
@@ -191,14 +224,17 @@ public class GameManager {
     }
 
     public void GameOver() {
+        timer.stop();
         gamePane.setVisible(false);
         if (lives == 0) {
             GameOverLable.setVisible(true);
             WinLable.setVisible(false);
+            nextLevelButton.setVisible(false);
         }
         if (lives > 0 && bricks.isEmpty()) {
             WinLable.setVisible(true);
             GameOverLable.setVisible(false);
+            nextLevelButton.setVisible(true);
         }
         EndGame.setVisible(true);
     }
@@ -220,40 +256,7 @@ public class GameManager {
     }
 
     public void initialize() {
-        backgroundMusic();
-        svgPaths.add(heart1);
-        svgPaths.add(heart2);
-        svgPaths.add(heart3);
-        lives=svgPaths.size();
-        setting.setVisible(false);
-        gamePane.getChildren().add(ball.getCircle());
-        gamePane.getChildren().add(paddle.getRectangle());
-
-        gamePane.setVisible(false);
-        EndGame.setVisible(false);
-
-        timer = new AnimationTimer() {
-            @Override
-            public void handle(long l) {
-                checkCollisions();
-                ball.move();
-                if (ball.getY() > 480 - ball.getCircle().getRadius()) {
-                    timer.stop();
-                    ballAttachToPaddle = true;
-                    ball.setX(paddle.getX() + paddle.getRectangle().getWidth() / 2);
-                    ball.setY(ballY);
-                    ball.setDirectionX(0);
-                    ball.setDirectionY(-4);
-                    if(lives>0) {
-                        lives--;
-                        svgPaths.get(lives).setVisible(false);
-                    }
-                        System.out.println(lives);
-                    if (lives == 0) {
-                        GameOver();
-                    }
-                }
-            }
-        };
+        startGame();
+        updateGame();
     }
 }
