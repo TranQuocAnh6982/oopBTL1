@@ -10,6 +10,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.shape.SVGPath;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -40,6 +41,14 @@ public class GameManager {
     private Button settingButton;
     @FXML
     private Button exitButton;
+    @FXML
+    private List<SVGPath> svgPaths = new ArrayList<>();
+    @FXML
+    private SVGPath heart1;
+    @FXML
+    private SVGPath heart2;
+    @FXML
+    private SVGPath heart3;
     private int currentLevel = 1;
     private List<Brick> bricks = new ArrayList<>();
     private List<PowerUp> powerUps = new ArrayList<>();
@@ -82,12 +91,15 @@ public class GameManager {
             bricks.add(brick);
             gamePane.getChildren().add(brick.getRectangle());
         }
+        for(SVGPath svgPath : svgPaths) {
+            svgPath.setVisible(true);
+        }
+        lives=svgPaths.size();
         timer.stop();
         Menu.setVisible(false);
         gamePane.setVisible(true);
         EndGame.setVisible(false);
         score = 0;
-        lives = 3;
         paddle.setX(270);
         paddle.setY(450);
         ball.setX(paddle.getX() + paddle.getRectangle().getWidth() / 2);
@@ -209,6 +221,10 @@ public class GameManager {
 
     public void initialize() {
         backgroundMusic();
+        svgPaths.add(heart1);
+        svgPaths.add(heart2);
+        svgPaths.add(heart3);
+        lives=svgPaths.size();
         setting.setVisible(false);
         gamePane.getChildren().add(ball.getCircle());
         gamePane.getChildren().add(paddle.getRectangle());
@@ -228,8 +244,11 @@ public class GameManager {
                     ball.setY(ballY);
                     ball.setDirectionX(0);
                     ball.setDirectionY(-4);
-                    lives--;
-                    System.out.println(lives);
+                    if(lives>0) {
+                        lives--;
+                        svgPaths.get(lives).setVisible(false);
+                    }
+                        System.out.println(lives);
                     if (lives == 0) {
                         GameOver();
                     }

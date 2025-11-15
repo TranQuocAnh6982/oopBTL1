@@ -6,6 +6,8 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.oopbtl1.GameManager">
     <children>
@@ -17,7 +19,13 @@
         <Pane fx:id="gamePane" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
                 <Button fx:id="homeButton" layoutX="558.0" layoutY="14.0" mnemonicParsing="false" onAction="#onClickButtonHome" text="Home" />
-                <Label fx:id="scoreLable" layoutX="46.0" layoutY="18.0" text="Score" />
+                <Label fx:id="scoreLable" layoutX="46.0" layoutY="18.0" text="Score" textFill="#961212">
+               <font>
+                  <Font size="18.0" />
+               </font></Label>
+            <SVGPath fx:id="heart1" content="M10,30  A20,20 0,0,1 50,30  A20,20 0,0,1 90,30 Q90,60 50,90  Q10,60 10,30 Z" fill="RED" layoutX="180.0" layoutY="-20.0" scaleX="0.3" scaleY="0.3" />
+            <SVGPath fx:id="heart2" content="M10,30  A20,20 0,0,1 50,30  A20,20 0,0,1 90,30 Q90,60 50,90  Q10,60 10,30 Z" fill="RED" layoutX="230.0" layoutY="-20.0" scaleX="0.3" scaleY="0.3" />
+            <SVGPath fx:id="heart3" content="M10,30  A20,20 0,0,1 50,30  A20,20 0,0,1 90,30 Q90,60 50,90  Q10,60 10,30 Z" fill="RED" layoutX="280.0" layoutY="-20.0" scaleX="0.3" scaleY="0.3" />
             </children>
         </Pane>
         <Pane fx:id="Menu" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
