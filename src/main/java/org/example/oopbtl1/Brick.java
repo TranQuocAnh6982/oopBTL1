@@ -7,6 +7,7 @@ public class Brick extends GameObject {
     @FXML
     private Rectangle brick;
     private double hitPoints;
+    private String type;
 
     public String getType() {
         return type;
@@ -16,7 +17,6 @@ public class Brick extends GameObject {
         this.type = type;
     }
 
-    private String type;
 
     public Brick() {
     }
