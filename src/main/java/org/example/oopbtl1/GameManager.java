@@ -123,6 +123,7 @@ public class GameManager {
         Menu.setVisible(false);
         gamePane.setVisible(true);
         EndGame.setVisible(false);
+        
         score = 0;
         paddle.setX(270);
         paddle.setY(450);
