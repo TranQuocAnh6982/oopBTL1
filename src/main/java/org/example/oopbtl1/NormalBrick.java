@@ -7,6 +7,7 @@ public class NormalBrick extends Brick {
         super(x, y);
         super.getRectangle().setFill(Color.CYAN);
         super.setHitPoints(hitPoints);
+        super.setType("Normal");
     }
 
 }
