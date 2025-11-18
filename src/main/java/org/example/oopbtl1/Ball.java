@@ -5,23 +5,32 @@ import javafx.scene.shape.Circle;
 
 public class Ball extends MovableObject {
     private Circle ball;
-    private double directionX = 0, directionY = -4;
-    private double speed = 1;
+    private final Color ORIGINAL_COLOR = Color.GREEN;
+    private double directionX = 0, directionY = -2.5;
+    private double speed = 0.3;
 
     public Ball(double radius, double X, double Y) {
         ball = new Circle(radius);
-        ball.setFill(Color.GREEN);
+        ball.setFill(ORIGINAL_COLOR);
         ball.setLayoutX(X);
         ball.setLayoutY(Y);
+        //THEM
+        super.setX(X);
+        super.setY(Y);
     }
 
     public Circle getCircle() {
         return ball;
     }
-
-    public void bounceOff(GameObject other) {
+    //THEM
+    public void setColor(Color color) {
+        ball.setFill(color);
     }
 
+    public void resetColor() {
+        ball.setFill(ORIGINAL_COLOR);
+    }
+    //
     public boolean checkCollision(GameObject other) {
         if (other instanceof Paddle) {
             Paddle paddle = (Paddle) other;
@@ -37,24 +46,29 @@ public class Ball extends MovableObject {
         return false;
     }
 
+    @Override
     public void move() {
         double dx = getDirectionX();
         double dy = getDirectionY();
         double X = ball.getLayoutX();
         double Y = ball.getLayoutY();
+
         if (X + dx < 0 + ball.getRadius() || X + dx > 640 - ball.getRadius()) {
-            if (dx < 0 && dx > -5) dx -= 1;
-            if (dx >= 0 && dx < 5) dx += 1;
-            dx = -(dx + speed);
+            if (dx < 0 && dx > -5) dx -= speed;
+            if (dx >= 0 && dx < 5) dx += speed;
+            dx = -(dx);
             setDirectionX(dx);
         }
         if (Y + dy < 0 + ball.getRadius()) {
-            dy = -(dy + speed);
+            dy = -(dy);
             setDirectionY(dy);
         }
+
         ball.setLayoutX(X + dx);
         ball.setLayoutY(Y + dy);
-
+        //THEM
+        super.setX(X + dx);
+        super.setY(Y + dy);
     }
 
     public double getDirectionX() {
@@ -77,10 +91,11 @@ public class Ball extends MovableObject {
         return speed;
     }
 
-    public double getX() {
-        return ball.getLayoutX();
+    @Override
+    public double getX() { return ball.getLayoutX();
     }
 
+    @Override
     public double getY() {
         return ball.getLayoutY();
     }

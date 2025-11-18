@@ -7,6 +7,7 @@ public class StrongBrick extends Brick {
         super(x, y);
         super.getRectangle().setFill(Color.DARKGRAY);
         super.setHitPoints(hitPoints);
+        super.setType("Strong");
     }
 
     public double getHitPoints() {
