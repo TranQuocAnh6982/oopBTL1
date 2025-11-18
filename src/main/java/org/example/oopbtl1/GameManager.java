@@ -7,7 +7,11 @@ import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.shape.SVGPath;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,21 +20,26 @@ public class GameManager {
     @FXML
     private Pane gamePane;
     @FXML
-    private Button homeButton;
-    @FXML
     private Label scoreLable;
     @FXML
     private Pane Menu;
-    @FXML
-    private Label gameTitle;
-    @FXML
-    private Button startButton;
     @FXML
     private Pane EndGame;
     @FXML
     private Label GameOverLable, WinLable;
     @FXML
-    private Button restartButton;
+    private Pane setting;
+    @FXML
+    private List<SVGPath> svgPaths = new ArrayList<>();
+    @FXML
+    private SVGPath heart1;
+    @FXML
+    private SVGPath heart2;
+    @FXML
+    private SVGPath heart3;
+    @FXML
+    private Button nextLevelButton;
+    private int currentLevel = 1;
     private List<Brick> bricks = new ArrayList<>();
     private List<PowerUp> powerUps = new ArrayList<>();
     private List<Ball> activeBalls = new ArrayList<>();
@@ -51,6 +60,10 @@ public class GameManager {
     private int lives;
     private AnimationTimer timer;
     private boolean ballAttachToPaddle = true;
+    private MediaPlayer backgroundPlayer;
+    private MediaPlayer ballPlayer;
+    private Media backgroundMedia;
+    private Media ballMedia;
     private double ballY = 420;
 
     Paddle paddle = new Paddle(270, 450);
@@ -150,10 +163,38 @@ public class GameManager {
         lastUpdateTime = 0;
     }
 
+    public void onClickButtonLevel1() {
+        currentLevel = 1;
+        onClickButtonStart();
+    }
+
+    public void onClickButtonLevel2() {
+        currentLevel = 2;
+        onClickButtonStart();
+    }
+
+    public void onClickNextLevelButton() {
+        currentLevel = currentLevel + 1;
+        onClickButtonStart();
+    }
+
+    public void onClickButtonLevel3() {
+        currentLevel = 3;
+        onClickButtonStart();
+    }
+
     public void onClickButtonHome() {
         timer.stop();
         Menu.setVisible(true);
         gamePane.setVisible(false);
+    }
+
+    public void onClickButtonExit() {
+        setting.setVisible(false);
+    }
+
+    public void onClickButtonSetting() {
+        setting.setVisible(true);
     }
 
     public void handleInput(KeyEvent e) {
@@ -237,10 +278,12 @@ public class GameManager {
         if (lives == 0) {
             GameOverLable.setVisible(true);
             WinLable.setVisible(false);
+            nextLevelButton.setVisible(false);
         }
         if (lives > 0 && bricks.isEmpty()) {
             WinLable.setVisible(true);
             GameOverLable.setVisible(false);
+            nextLevelButton.setVisible(true);
         }
         EndGame.setVisible(true);
     }
