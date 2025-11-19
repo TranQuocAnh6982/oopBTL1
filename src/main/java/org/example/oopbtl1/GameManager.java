@@ -245,7 +245,8 @@ public class GameManager {
                 ballCollisionMusic();
                 if (dx < 0 && dx > -5) dx -= ball.getSpeed();
                 if (dx >= 0 && dx < 5) dx += ball.getSpeed();
-                ball.setDirectionX(-(dx));
+                ball.setY(paddle.getY() -ball.getCircle().getRadius());
+                ball.setDirectionX(-(dx+ball.getSpeed()));
                 ball.setDirectionY(-(dy));
             }
 
@@ -255,7 +256,7 @@ public class GameManager {
                     ballCollisionMusic();
                     if (dx < 0 && dx > -5) dx -= ball.getSpeed();
                     if (dx >= 0 && dx < 5) dx += ball.getSpeed();
-                    ball.setDirectionX(-(dx));
+                    ball.setDirectionX(-(dx+ball.getSpeed()));
                     ball.setDirectionY(-(dy));
 
                     for (int i = 0; i < damageMultiplier; i++) {
