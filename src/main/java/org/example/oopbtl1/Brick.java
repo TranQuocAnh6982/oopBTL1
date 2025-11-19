@@ -17,7 +17,6 @@ public class Brick extends GameObject {
         this.type = type;
     }
 
-
     public Brick() {
     }
 
@@ -25,6 +24,8 @@ public class Brick extends GameObject {
         brick = new Rectangle(50, 20);
         brick.setLayoutX(X);
         brick.setLayoutY(Y);
+        setWidth(50);
+        setHeight(20);
     }
 
     public Rectangle getRectangle() {
@@ -47,10 +48,12 @@ public class Brick extends GameObject {
         this.hitPoints = hitPoints;
     }
 
+    @Override
     public double getX() {
         return brick.getLayoutX();
     }
 
+    @Override
     public double getY() {
         return brick.getLayoutY();
     }
