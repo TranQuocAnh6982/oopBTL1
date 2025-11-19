@@ -129,30 +129,21 @@ public class GameManager {
         paddle.resetSizeAndColor();
 
         for (int i = 0; i < 44; i++) {
-            double x = (i % 11) * 55 + 17.5;
-            double y = (i / 11) * 25 + 50;
-            Brick brick;
-            if (currentLevel == 1) {
-                brick = new NormalBrick(x, y, 1);
-            } else if (currentLevel == 2) {
-                brick = Math.random() < 0.5 ? new StrongBrick(x, y, 2)
-                        : new NormalBrick(x, y, 2);
+            Brick newBrick;
+            if (Math.random() * 2 < 1) {
+                newBrick = new NormalBrick((i % 11) * 55 + 17.5, (i / 11) * 25 + 50, 1);
             } else {
-                brick = new StrongBrick(x, y, 1);
+                newBrick = new StrongBrick((i % 11) * 55 + 17.5, (i / 11) * 25 + 50, 2);
             }
-            bricks.add(brick);
-            gamePane.getChildren().add(brick.getRectangle());
+            bricks.add(newBrick);
+            gamePane.getChildren().add(newBrick.getRectangle());
         }
-        setting.setVisible(false);
-        for (SVGPath svgPath : svgPaths) {
-            svgPath.setVisible(true);
-        }
-        lives = svgPaths.size();
+
         timer.stop();
         Menu.setVisible(false);
         gamePane.setVisible(true);
         EndGame.setVisible(false);
-
+        
         score = 0;
         lives = 3;
 
@@ -242,7 +233,6 @@ public class GameManager {
             double dy = ball.getDirectionY();
 
             if (ball.checkCollision(paddle)) {
-                ballCollisionMusic();
                 if (dx < 0 && dx > -5) dx -= ball.getSpeed();
                 if (dx >= 0 && dx < 5) dx += ball.getSpeed();
                 ball.setDirectionX(-(dx));
@@ -252,7 +242,6 @@ public class GameManager {
             List<Brick> bricksToRemove = new ArrayList<>();
             for (Brick brick : bricks) {
                 if (ball.checkCollision(brick)) {
-                    ballCollisionMusic();
                     if (dx < 0 && dx > -5) dx -= ball.getSpeed();
                     if (dx >= 0 && dx < 5) dx += ball.getSpeed();
                     ball.setDirectionX(-(dx));
@@ -299,29 +288,8 @@ public class GameManager {
         }
         EndGame.setVisible(true);
     }
-    public void backgroundMusic() {
-        URL url = getClass().getResource("/org/example/oopbtl1/sound/backgroundMusic.mp3");
-        backgroundMedia = new Media(url.toExternalForm());
-        backgroundPlayer = new MediaPlayer(backgroundMedia);
-        backgroundPlayer.setVolume(0.2);
-        backgroundPlayer.play();
-    }
 
-    public void ballCollisionMusic() {
-        URL url = getClass().getResource("/org/example/oopbtl1/sound/ballCollisionMusic.mp3");
-        ballMedia = new Media(url.toExternalForm());
-        ballPlayer = new MediaPlayer(ballMedia);
-        ballPlayer.setVolume(2);
-        ballPlayer.play();
-    }
     public void initialize() {
-        backgroundMusic();
-        svgPaths.add(heart1);
-        svgPaths.add(heart2);
-        svgPaths.add(heart3);
-        lives = svgPaths.size();
-        setting.setVisible(false);
-        nextLevelButton.setVisible(false);
         gamePane.getChildren().add(paddle.getRectangle());
 
         gamePane.setVisible(false);
@@ -394,7 +362,7 @@ public class GameManager {
 
                 if (activeBalls.isEmpty() && !ballAttachToPaddle) {
                     lives--;
-                    svgPaths.get(lives).setVisible(false);
+
                     if (lives == 0) {
                         GameOver();
                     } else {
