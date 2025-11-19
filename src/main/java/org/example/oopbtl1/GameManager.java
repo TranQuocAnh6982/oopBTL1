@@ -246,6 +246,7 @@ public class GameManager {
         backgroundPlayer = new MediaPlayer(backgroundMedia);
         backgroundPlayer.setVolume(0.2);
         backgroundPlayer.play();
+        backgroundPlayer.setCycleCount(MediaPlayer.INDEFINITE);
     }
 
     public void ballCollisionMusic() {
